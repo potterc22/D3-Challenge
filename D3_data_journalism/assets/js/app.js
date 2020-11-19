@@ -249,16 +249,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
             xAxis = renderXAxes(xLinearScale, xAxis);
 
             // updates circles with new x values
-            circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
-
-            // updates y scale for new data
-            yLinearScale = yScale(censusData, chosenYAxis);
-
-            // updates y axis with transition
-            yAxis = renderYAxes(yLinearScale, yAxis);
-
-            // updates circles with new y values
-            circlesGroup = renderYCircles(circlesGroup, yLinearScale, chosenYAxis);
+            circlesGroup = renderXCircles(circlesGroup, xLinearScale, chosenXAxis);
 
             // updates tooltips with new info
             circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
@@ -281,6 +272,9 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
                     .classed("inactive", false);
             }
 
+
+
+
             // changes classes to change bold text for Y axis
             if (chosenYAxis === "obesity") {
                 obesityLabel
@@ -300,6 +294,48 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
             }
         }
     });
+
+    // y axis labels event listener
+    labelsGroup.selectAll("text")
+        .on("click", function() {
+        // get value of selection
+        var value = d3.select(this).attr("value");
+        if (value !== chosenYAxis) {
+
+            // replaces chosenXAxis with value
+            chosenYAxis = value;
+
+            // updates y scale for new data
+            yLinearScale = yScale(censusData, chosenYAxis);
+
+            // updates y axis with transition
+            yAxis = renderYAxes(yLinearScale, yAxis);
+
+            // updates circles with new y values
+            circlesGroup = renderYCircles(circlesGroup, yLinearScale, chosenYAxis);
+
+            // updates tooltips with new info
+            circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+
+            // changes classes to change bold text for Y axis
+            if (chosenYAxis === "obesity") {
+                obesityLabel
+                    .classed("active", true)
+                    .classed("inactive", false);
+                smokesLabel
+                    .classed("active", false)
+                    .classed("inactive", true);
+            }
+            else {
+                obesityLabel
+                    .classed("active", false)
+                    .classed("inactive", true);
+                smokesLabel
+                    .classed("active", true)
+                    .classed("inactive", false);
+            }
+        }
+    });        
 }).catch(function(error) {
     console.log(error);
 });
