@@ -71,9 +71,10 @@ function renderXCircles(circlesGroup, newXScale, chosenXAxis) {
 function yScale(censusData, chosenYAxis) {
     // create scales
     var yLinearScale = d3.scaleLinear()
-      .domain([d3.min(censusData, d => d[chosenYAxis]) * 0.8,
-        d3.max(censusData, d => d[chosenYAxis]) * 1.2
-      ])
+    //   .domain([d3.min(censusData, d => d[chosenYAxis]) * 0.8,
+    //     d3.max(censusData, d => d[chosenYAxis]) * 1.2
+    //   ])
+      .domain(d3.extent(censusData, d => d[chosenYAxis]))
       .range([height, 0]);
   
     return yLinearScale;
@@ -151,6 +152,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
       data.poverty = +data.poverty;
       data.obesity = +data.obesity;
       data.income = +data.income;
+      data.smokes = +data.smokes;
     });
   
     // xLinearScale function above csv import
@@ -182,7 +184,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
       .enter()
       .append("circle")
       .attr("cx", d => xLinearScale(d[chosenXAxis]))
-      .attr("cy", d => yLinearScale(d.obesity))
+      .attr("cy", d => yLinearScale(d[chosenYAxis]))
       .attr("r", 15)
       .attr("fill", "#06D6A0")
       .attr("opacity", ".5")
@@ -192,7 +194,8 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
       .attr("transform", `translate(${width / 2}, ${height + 20})`);
 
     // Create group for two y-axis labels
-    var yLabelsGroup = chartGroup.append("g");
+    var yLabelsGroup = chartGroup.append("g")
+    .attr("transform", "rotate(-90)");
   
     // append x axis for poverty
     var povertyLabel = xLabelsGroup.append("text")
@@ -214,20 +217,20 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
   
     // append y axis for obesity
     var obesityLabel = yLabelsGroup.append("text")
-      .attr("transform", "rotate(-90)")
       .attr("y", 0 - (margin.left/2))
       .attr("x", 0 - (height / 2))
       .attr("dy", "1em")
       .classed("axis-text", true)
+      .classed("active", true)
       .text("Obese (%)");
 
     // append y axis for smokes
     var smokesLabel = yLabelsGroup.append("text")
-      .attr("transform", "rotate(-90)")
       .attr("y", 0 - (margin.left/1.30))
       .attr("x", 0 - (height / 2))
       .attr("dy", "1em")
       .classed("axis-text", true)
+      .classed("inactive", true)
       .text("Smokes (%)");
 
     // updateToolTip function above csv import
@@ -285,7 +288,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
         var value = d3.select(this).attr("value");
         if (value !== chosenYAxis) {
 
-            // replaces chosenXAxis with value
+            // replaces chosenYAxis with value
             chosenYAxis = value;
 
             // updates y scale for new data
