@@ -9,13 +9,14 @@ var svgHeight = 500;
 var margin = {
   top: 20,
   right: 40,
-  bottom: 100,
+  bottom: 80,
   left: 100
 };
 
 var width = svgWidth - margin.left - margin.right;
 var height = svgHeight - margin.top - margin.bottom;
-
+console.log(`Width: ${width}`)
+console.log(`Height: ${height}`)
 // Create an SVG wrapper, append an SVG group that will hold our chart,
 // and shift the latter by left and top margins.
 var svg = d3
@@ -69,13 +70,17 @@ function renderXCircles(circlesGroup, newXScale, chosenXAxis) {
 
 // function used for updating y-scale var upon click on axis label
 function yScale(censusData, chosenYAxis) {
+    var yMin = d3.min(censusData, d => d[chosenYAxis])
+    var yMax = d3.max(censusData, d => d[chosenYAxis])
+    console.log(`Y min: ${yMin}`)
+    console.log(`Y max: ${yMax}`)
     // create scales
     var yLinearScale = d3.scaleLinear()
-      .domain([d3.min(censusData, d => d[chosenYAxis]) * 0.8,
-        d3.max(censusData, d => d[chosenYAxis]) * 1.2
+      .domain([yMin * 0.7,
+        yMax * 1.2
       ])
       .range([height, 0]);
-  
+    
     return yLinearScale;
   
   }
@@ -158,6 +163,8 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
       data.obesity = +data.obesity;
       data.income = +data.income;
       data.smokes = +data.smokes;
+      data.healthcare = +data.healthcare;
+      data.age = +data.age;
     });
   
     // xLinearScale function above csv import
@@ -205,7 +212,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
     // append x axis for poverty
     var povertyLabel = xLabelsGroup.append("text")
       .attr("x", 0)
-      .attr("y", 20)
+      .attr("y", 15)
       .attr("value", "poverty") // value to grab for event listener
       .classed("active", true)
       .text("In Poverty (%)");
@@ -213,7 +220,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
     // append x axis for income
     var incomeLabel = xLabelsGroup.append("text")
       .attr("x", 0)
-      .attr("y", 40)
+      .attr("y", 35)
       .attr("value", "income") // value to grab for event listener
       .classed("inactive", true)
       .text("Household Income (Median)");
@@ -221,7 +228,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
     // append x axis for age
     var ageLabel = xLabelsGroup.append("text")
       .attr("x", 0)
-      .attr("y", 60)
+      .attr("y", 55)
       .attr("value", "age") // value to grab for event listener
       .classed("inactive", true)
       .text("Age (Median)");
