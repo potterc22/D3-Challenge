@@ -271,27 +271,6 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
                     .classed("active", true)
                     .classed("inactive", false);
             }
-
-
-
-
-            // changes classes to change bold text for Y axis
-            if (chosenYAxis === "obesity") {
-                obesityLabel
-                    .classed("active", true)
-                    .classed("inactive", false);
-                smokesLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-            }
-            else {
-                obesityLabel
-                    .classed("active", false)
-                    .classed("inactive", true);
-                smokesLabel
-                    .classed("active", true)
-                    .classed("inactive", false);
-            }
         }
     });
 
