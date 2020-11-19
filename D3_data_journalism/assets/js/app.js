@@ -172,7 +172,8 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
       .call(bottomAxis);
   
     // append y axis
-    chartGroup.append("g")
+    var yAxis = chartGroup.append("g")
+      .classed("y-axis", true)
       .call(leftAxis);
   
     // append initial circles
@@ -187,11 +188,14 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
       .attr("opacity", ".5")
   
     // Create group for two x-axis labels
-    var labelsGroup = chartGroup.append("g")
+    var xLabelsGroup = chartGroup.append("g")
       .attr("transform", `translate(${width / 2}, ${height + 20})`);
+
+    // Create group for two y-axis labels
+    var yLabelsGroup = chartGroup.append("g");
   
     // append x axis for poverty
-    var povertyLabel = labelsGroup.append("text")
+    var povertyLabel = xLabelsGroup.append("text")
       .attr("x", 0)
       .attr("y", 20)
       .attr("value", "poverty") // value to grab for event listener
@@ -200,7 +204,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
       .text("In Poverty (%)");
   
     // append x axis for income
-    var incomeLabel = labelsGroup.append("text")
+    var incomeLabel = xLabelsGroup.append("text")
       .attr("x", 0)
       .attr("y", 40)
       .attr("value", "income") // value to grab for event listener
@@ -209,7 +213,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
       .text("Household Income (Median)");
   
     // append y axis for obesity
-    var obesityLabel = chartGroup.append("text")
+    var obesityLabel = yLabelsGroup.append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", 0 - (margin.left/2))
       .attr("x", 0 - (height / 2))
@@ -218,7 +222,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
       .text("Obese (%)");
 
     // append y axis for smokes
-    var smokesLabel = chartGroup.append("text")
+    var smokesLabel = yLabelsGroup.append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", 0 - (margin.left/1.30))
       .attr("x", 0 - (height / 2))
@@ -230,7 +234,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
     var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
 
     // x axis labels event listener
-    labelsGroup.selectAll("text")
+    xLabelsGroup.selectAll("text")
         .on("click", function() {
         // get value of selection
         var value = d3.select(this).attr("value");
@@ -275,7 +279,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
     });
 
     // y axis labels event listener
-    labelsGroup.selectAll("text")
+    yLabelsGroup.selectAll("text")
         .on("click", function() {
         // get value of selection
         var value = d3.select(this).attr("value");
