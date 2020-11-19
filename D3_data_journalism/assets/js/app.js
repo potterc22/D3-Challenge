@@ -71,10 +71,9 @@ function renderXCircles(circlesGroup, newXScale, chosenXAxis) {
 function yScale(censusData, chosenYAxis) {
     // create scales
     var yLinearScale = d3.scaleLinear()
-    //   .domain([d3.min(censusData, d => d[chosenYAxis]) * 0.8,
-    //     d3.max(censusData, d => d[chosenYAxis]) * 1.2
-    //   ])
-      .domain(d3.extent(censusData, d => d[chosenYAxis]))
+      .domain([d3.min(censusData, d => d[chosenYAxis]) * 0.8,
+        d3.max(censusData, d => d[chosenYAxis]) * 1.2
+      ])
       .range([height, 0]);
   
     return yLinearScale;
@@ -220,6 +219,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
       .attr("y", 0 - (margin.left/2))
       .attr("x", 0 - (height / 2))
       .attr("dy", "1em")
+      .attr("value", "obesity") // value to grab for event listener
       .classed("axis-text", true)
       .classed("active", true)
       .text("Obese (%)");
@@ -229,6 +229,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
       .attr("y", 0 - (margin.left/1.30))
       .attr("x", 0 - (height / 2))
       .attr("dy", "1em")
+      .attr("value", "smokes") // value to grab for event listener
       .classed("axis-text", true)
       .classed("inactive", true)
       .text("Smokes (%)");
