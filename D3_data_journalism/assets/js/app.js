@@ -108,7 +108,7 @@ function renderYCircles(circlesGroup, newYScale, chosenYAxis) {
 }
 
 // function used for updating circles group with new tooltip
-function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
+function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup, textGroup) {
 
     var xLabel;
     var yLabel;
@@ -199,7 +199,21 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
       .attr("cy", d => yLinearScale(d[chosenYAxis]))
       .attr("r", 15)
       .attr("fill", "#06D6A0")
-      .attr("opacity", ".5")
+      .attr("opacity", ".75")
+
+    // add state abbreviation to each circle
+    var textGroup = chartGroup.selectAll(null)
+        .data(censusData)
+        .enter()
+        .append("text")
+        .attr("x", d => xLinearScale(d[chosenXAxis]))
+        .attr("y", d => yLinearScale(d[chosenYAxis]))
+        .text(d => d.abbr)
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "10px")
+        .attr("text-anchor", "middle")
+        .attr("fill", "white");
+
   
     // Create group for three x-axis labels
     var xLabelsGroup = chartGroup.append("g")
