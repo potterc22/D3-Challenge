@@ -4,7 +4,7 @@
 //     healthcare vs age
 // set svg width, height and margin
 var svgWidth = 960;
-var svgHeight = 500;
+var svgHeight = 700;
 
 var margin = {
   top: 20,
@@ -297,6 +297,8 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
 
     // updateToolTip function above csv import
     var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+
+    var circlesText = updateToolTip()
 
     // x axis labels event listener
     xLabelsGroup.selectAll("text")
