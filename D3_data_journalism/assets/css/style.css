@@ -45,6 +45,11 @@ body {
   text-anchor: middle;
 }
 
+.inactive:hover {
+  fill: #551aaf;
+  cursor: pointer;
+}
+
 .tooltip {
   position: absolute;
   width: 135px;

@@ -117,7 +117,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
       xLabel = "Poverty(%):";
     }
     else if (chosenXAxis === "age") {
-        yLabel = "Age: "
+        xLabel = "Age: "
     }
     else {
       xLabel = "Income(Avg):";
@@ -127,7 +127,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
         yLabel = "Obese(%):";
     }
     else if (chosenYAxis === "healthcare") {
-        yLabel = "Lacks Healthcare(%):"
+        yLabel = "Healthcare(%):"
     }
     else {
         yLabel = "Smokes(%):";
@@ -146,9 +146,9 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
       toolTip.show(data);
     })
       // onmouseout event
-      .on("mouseout", function(data, index) {
+    circlesGroup.on("mouseout", function(data, index) {
         toolTip.hide(data);
-      });
+    });
   
     return circlesGroup;
   }
