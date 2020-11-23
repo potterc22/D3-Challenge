@@ -37,8 +37,8 @@ var chosenYAxis = "obesity";
 function xScale(censusData, chosenXAxis) {
   // create scales
   var xLinearScale = d3.scaleLinear()
-    .domain([d3.min(censusData, d => d[chosenXAxis]) * 0.8,
-      d3.max(censusData, d => d[chosenXAxis]) * 1.2
+    .domain([d3.min(censusData, d => d[chosenXAxis]) * 0.9,
+      d3.max(censusData, d => d[chosenXAxis]) * 1.1
     ])
     .range([0, width]);
 
@@ -85,8 +85,8 @@ function yScale(censusData, chosenYAxis) {
     console.log(`Y max: ${yMax}`)
     // create scales
     var yLinearScale = d3.scaleLinear()
-      .domain([yMin * 0.7,
-        yMax * 1.2
+      .domain([yMin * 0.85,
+        yMax * 1.15
       ])
       .range([height, 0]);
     
@@ -153,7 +153,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
   
     var toolTip = d3.tip()
       .attr("class", "tooltip")
-      .offset([80, -60])
+      .offset([80, -80])
       .html(function(d) {
         return (`${d.state}<br>${xLabel} ${d[chosenXAxis]}<br>${yLabel} ${d[chosenYAxis]}`);
       });
@@ -161,7 +161,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
     circlesGroup.call(toolTip);
   
     circlesGroup.on("mouseover", function(data) {
-      toolTip.show(data);
+      toolTip.show(data, this)
     })
       // onmouseout event
     circlesGroup.on("mouseout", function(data, index) {
@@ -189,9 +189,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
     var xLinearScale = xScale(censusData, chosenXAxis);
   
     // Create y scale function
-    var yLinearScale = d3.scaleLinear()
-      .domain([0, d3.max(censusData, d => d.obesity)])
-      .range([height, 0]);
+    var yLinearScale = yScale(censusData, chosenYAxis);
   
     // Create initial axis functions
     var bottomAxis = d3.axisBottom(xLinearScale);
@@ -225,12 +223,13 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
         .enter()
         .append("text")
         .attr("dx", d => xLinearScale(d[chosenXAxis]))
-        .attr("dy", d => yLinearScale(d[chosenYAxis]) + 3)
+        .attr("dy", d => yLinearScale(d[chosenYAxis]) + 2)
         .text(d => d.abbr)
         .attr("font-family", "sans-serif")
         .attr("font-size", "10px")
         .attr("text-anchor", "middle")
-        .attr("fill", "white");
+        .attr("fill", "white")
+        .classed("circlesText", true);
 
   
     // Create group for three x-axis labels
@@ -295,10 +294,8 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
       .classed("inactive", true)
       .text("Lacks Healthcare (%)");
 
-    // updateToolTip function above csv import
+    // updateToolTip function above csv import for initial tooltips
     var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
-
-    var circlesText = updateToolTip()
 
     // x axis labels event listener
     xLabelsGroup.selectAll("text")
