@@ -270,7 +270,6 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
       .attr("x", 0 - (height / 2))
       .attr("dy", "1em")
       .attr("value", "obesity") // value to grab for event listener
-      .classed("axis-text", true)
       .classed("active", true)
       .text("Obese (%)");
 
@@ -280,7 +279,6 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
       .attr("x", 0 - (height / 2))
       .attr("dy", "1em")
       .attr("value", "smokes") // value to grab for event listener
-      .classed("axis-text", true)
       .classed("inactive", true)
       .text("Smokes (%)");
 
@@ -290,7 +288,6 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
       .attr("x", 0 - (height / 2))
       .attr("dy", "1em")
       .attr("value", "healthcare") // value to grab for event listener
-      .classed("axis-text", true)
       .classed("inactive", true)
       .text("Lacks Healthcare (%)");
 
